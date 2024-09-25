@@ -1,0 +1,265 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudwatch-exporter-config
+  namespace: monitor
+data:
+  config.yml: |
+    region: us-east-1
+    # Cloud Exporter Configuration for EKS Datadog Integration Metrics
+    metrics:
+      # EKS Container Insights Metrics
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_container_status_waiting_reason_crash_loop_back_off
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_admission_webhook_admission_duration_seconds
+        aws_dimensions: [ClusterName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_storage_size_bytes
+        aws_dimensions: [ClusterName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_longrunning_requests
+        aws_dimensions: [ClusterName]
+        aws_statistics: [Sum]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_current_inflight_requests
+        aws_dimensions: [ClusterName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_cpu_limit
+        aws_dimensions: [ClusterName, PodName]
+        aws_statistics: [Max]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_number_of_container_restarts
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_cpu_reserved_capacity
+        aws_dimensions: [ClusterName, PodName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_cpu_utilization_over_pod_limit
+        aws_dimensions: [ClusterName, PodName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: container_cpu_limit
+        aws_dimensions: [ClusterName, PodName]
+        aws_statistics: [Max]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: node_cpu_utilization
+        aws_dimensions: [ClusterName, NodeName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_network_rx_bytes
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]
+
+      # Add additional metrics below following the same format
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: etcd_request_duration_seconds
+        aws_dimensions: [ClusterName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_admission_controller_admission_duration_seconds
+        aws_dimensions: [ClusterName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_admission_step_admission_duration_seconds
+        aws_dimensions: [ClusterName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_memory_utilization
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_status_pending
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: container_memory_utilization
+        aws_dimensions: [ClusterName, PodName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_request_total
+        aws_dimensions: [ClusterName]
+        aws_statistics: [Sum]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_request_total_5xx
+        aws_dimensions: [ClusterName]
+        aws_statistics: [Sum]
+        
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_status_running
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_request_duration_seconds
+        aws_dimensions: [ClusterName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: node_memory_utilization
+        aws_dimensions: [ClusterName, NodeName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: container_memory_utilization_over_container_limit
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Average]  # Added from the EKS Datadog integration list
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: container_memory_request
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Average]  # Added from the EKS Datadog integration list
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: container_memory_limit
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Max]  # Added from the EKS Datadog integration list
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: container_cpu_utilization
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Average]  # Added from the EKS Datadog integration list
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: container_memory_failures_total
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]  # Added from the EKS Datadog integration list
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: container_cpu_request
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Average]  # Added from the EKS Datadog integration list
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_status_running
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]  
+        aws_dimension_select:
+          PodName: ['prometheus']
+      
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_status_running
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]  
+        aws_dimension_select:
+          PodName: ['node-exporter']
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_status_running
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]  
+        aws_dimension_select:
+          PodName: ['newapp']
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_cpu_usage_total
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]  
+        aws_dimension_select:
+          PodName: ['node-exporter']
+      
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_cpu_usage_total
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]  
+        aws_dimension_select:
+          PodName: ['newapp']
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_cpu_usage_total
+        aws_dimensions: [ClusterName, Namespace, PodName]
+        aws_statistics: [Sum]  
+        aws_dimension_select:
+          PodName: ['prometheus']
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_cpu_usage_total
+        aws_dimensions: [ClusterName, Namespace, PodName, FullPodName]
+        aws_statistics: [Average]  
+        aws_dimension_select:
+          Namespace: ['monitor']
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_memory_working_set
+        aws_dimensions: [ClusterName, Namespace, PodName, FullPodName]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: pod_memory_working_set
+        aws_dimensions: [ClusterName, Namespace, PodName, FullPodName]
+        aws_statistics: [Sum] 
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: service_number_of_running_pods
+        aws_dimensions: [ClusterName, Namespace, Service]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: node_number_of_running_pods
+        aws_dimensions: [ClusterName, NodeName, InstanceId]
+        aws_statistics: [Sum]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_storage_list_duration_seconds
+        aws_dimensions: [ClusterName, resource]
+        aws_statistics: [Sum]
+      
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_storage_list_duration_seconds
+        aws_dimensions: [ClusterName, resource]
+        aws_statistics: [Average]
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_admission_webhook_admission_duration_seconds
+        aws_dimensions: [ClusterName, resource]
+        aws_statistics: [Average]  
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_admission_webhook_admission_duration_seconds
+        aws_dimensions: [ClusterName, resource]
+        aws_statistics: [Sum] 
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_admission_step_admission_duration_seconds
+        aws_dimensions: [ClusterName, operation]
+        aws_statistics: [Average] 
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: etcd_request_duration_seconds
+        aws_dimensions: [ClusterName, operation]
+        aws_statistics: [Average] 
+
+      - aws_namespace: ContainerInsights
+        aws_metric_name: apiserver_admission_controller_admission_duration_seconds
+        aws_dimensions: [ClusterName, operation]
+        aws_statistics: [Average]   
+      
+      
+
+      

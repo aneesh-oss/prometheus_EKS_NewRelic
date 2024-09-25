@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudwatch-exporter
+  namespace: monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudwatch-exporter
+  template:
+    metadata:
+      labels:
+        app: cloudwatch-exporter
+    spec:
+      containers:
+        - name: cloudwatch-exporter
+          image: prom/cloudwatch-exporter:latest
+          ports:
+            - containerPort: 9106
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config/config.yml
+              subPath: config.yml
+      volumes:
+        - name: config-volume
+          configMap:
+            name: cloudwatch-exporter-config

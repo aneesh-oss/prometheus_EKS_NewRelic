@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudwatch-agent
+  namespace: amazon-cloudwatch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudwatch-agent
+  template:
+    metadata:
+      labels:
+        app: cloudwatch-agent
+    spec:
+      containers:
+        - name: cloudwatch-agent
+          image: amazon/cloudwatch-agent:latest  # Correct image
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/cwagentconfig/config.json
+              subPath: config.json
+      volumes:
+        - name: config-volume
+          configMap:
+            name: cloudwatch-agent-config
+
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: cloudwatch-agent
+#   namespace: amazon-cloudwatch
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: cloudwatch-agent
+#   template:
+#     metadata:
+#       labels:
+#         app: cloudwatch-agent
+#     spec:
+#       containers:
+#         - name: cloudwatch-agent
+#           image: amazon/amazon-cloudwatch-agent:latest
+#           volumeMounts:
+#             - name: config-volume
+#               mountPath: /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+#               subPath: config.json
+#       volumes:
+#         - name: config-volume
+#           configMap:
+#             name: cloudwatch-agent-config

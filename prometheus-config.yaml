@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitor
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s  # Default scrape interval for Prometheus
+
+    scrape_configs:
+      # Scraping CloudWatch Exporter
+      - job_name: 'cloudwatch-exporter'
+        static_configs:
+          - targets: ['cloudwatch-exporter:9106']
+
+      # Scraping Kubernetes Nodes
+      - job_name: 'kubernetes-nodes'
+        scrape_interval: 5m  # Interval to scrape this target
+        static_configs:
+          - targets:
+              - 'a63a42c443c1f4885b275613579a4d8e-1232622037.us-east-1.elb.amazonaws.com:9100'
+
+      # Scraping a new application
+      - job_name: 'newapp'
+        metrics_path: /metrics  # Custom metrics path for this app
+        static_configs:
+          - targets:
+              - 'a58bbd296bbcd4631930a5a12956fa7b-353722783.us-east-1.elb.amazonaws.com:80'
+
+      # Scraping Node Exporter
+      - job_name: 'node-exporter'
+        scrape_interval: 5m  # Interval to scrape this target
+        static_configs:
+          - targets:
+              - 'a63a42c443c1f4885b275613579a4d8e-1232622037.us-east-1.elb.amazonaws.com:9100'
+
+    remote_write:
+      - url: https://metric-api.newrelic.com/prometheus/v1/write?prometheus_server=EKS-DROP-PROMETHEUS
+        authorization:
+          credentials: 5bb0b9d9d3e6800ab6dc1c5c8ea92568FFFFNRAL
+      - url: https://metric-api.newrelic.com/prometheus/v1/write?prometheus_server=prometheus_data
+        authorization:
+          credentials: c62d7411f15cb753339680bc7ab1c0aeFFFFNRAL
+
